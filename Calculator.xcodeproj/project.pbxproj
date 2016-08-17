@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F19868CD1D6484B5003498D2 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19868CC1D6484B5003498D2 /* CalculatorBrain.swift */; };
 		F1E111B41D6411A7001610EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E111B31D6411A7001610EB /* AppDelegate.swift */; };
 		F1E111B61D6411A7001610EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E111B51D6411A7001610EB /* ViewController.swift */; };
 		F1E111B91D6411A7001610EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1E111B71D6411A7001610EB /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F19868CC1D6484B5003498D2 /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
 		F1E111B01D6411A7001610EB /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1E111B31D6411A7001610EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F1E111B51D6411A7001610EB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -54,14 +56,23 @@
 		F1E111B21D6411A7001610EB /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				F1E111B31D6411A7001610EB /* AppDelegate.swift */,
+				F1E111C51D6414D1001610EB /* Supporting Files */,
 				F1E111B51D6411A7001610EB /* ViewController.swift */,
 				F1E111B71D6411A7001610EB /* Main.storyboard */,
+				F19868CC1D6484B5003498D2 /* CalculatorBrain.swift */,
+			);
+			path = Calculator;
+			sourceTree = "<group>";
+		};
+		F1E111C51D6414D1001610EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F1E111B31D6411A7001610EB /* AppDelegate.swift */,
 				F1E111BA1D6411A7001610EB /* Assets.xcassets */,
 				F1E111BC1D6411A7001610EB /* LaunchScreen.storyboard */,
 				F1E111BF1D6411A7001610EB /* Info.plist */,
 			);
-			path = Calculator;
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +107,7 @@
 				TargetAttributes = {
 					F1E111AF1D6411A7001610EB = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = SU37V4ZZHQ;
 					};
 				};
 			};
@@ -135,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F19868CD1D6484B5003498D2 /* CalculatorBrain.swift in Sources */,
 				F1E111B61D6411A7001610EB /* ViewController.swift in Sources */,
 				F1E111B41D6411A7001610EB /* AppDelegate.swift in Sources */,
 			);
@@ -249,10 +262,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = stanford.cs193p.matthewbinshtok.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -260,10 +276,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = stanford.cs193p.matthewbinshtok.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -286,6 +305,7 @@
 				F1E111C41D6411A7001610EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
