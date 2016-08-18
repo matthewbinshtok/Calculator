@@ -9,21 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    @IBOutlet private weak var display: UILabel!
+    
+    private var brain = CalculatorBrain()
     
     private var userIsInTheMiddleOfTyping = false
-    
-    @IBAction private func touchDigit(sender: UIButton) {
-        let digit = sender.currentTitle!
-        if userIsInTheMiddleOfTyping {
-            let textCurrentlyInDisplay = display.text!
-            display.text = textCurrentlyInDisplay + digit
-        } else {
-            display.text = digit
-        }
-        userIsInTheMiddleOfTyping = true
-    }
     
     private var displayValue: Double {
         get {
@@ -34,8 +23,26 @@ class ViewController: UIViewController {
         }
     }
     
-    private var brain = CalculatorBrain()
+    @IBOutlet private weak var display: UILabel!
     
+    // button pressed is a number
+    @IBAction private func touchDigit(sender: UIButton) {
+        let digit = sender.currentTitle!
+        if userIsInTheMiddleOfTyping {
+            let textCurrentlyInDisplay = display.text!
+            //handling floating point
+            if digit == "." && textCurrentlyInDisplay.rangeOfString(".") == nil {
+                display.text = textCurrentlyInDisplay + digit
+            } else if digit != "." {
+                display.text = textCurrentlyInDisplay + digit
+            }
+        } else {
+            display.text = digit
+        }
+        userIsInTheMiddleOfTyping = true
+    }
+    
+    // button pressed is an operation
     @IBAction private func performOperation(sender: UIButton) {
         if userIsInTheMiddleOfTyping {
             brain.setOperand(displayValue)
@@ -45,6 +52,13 @@ class ViewController: UIViewController {
             brain.performOperation(mathematicalSymbol)
         }
         displayValue = brain.result
+    }
+    
+    // button pressed is the clear button
+    @IBAction func clearOperation(sender: UIButton) {
+        userIsInTheMiddleOfTyping = false;
+        display.text = "0";
+        brain.setOperand(0.0)
     }
 }
 
