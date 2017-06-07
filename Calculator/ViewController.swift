@@ -2,8 +2,9 @@
 //  ViewController.swift
 //  Calculator
 //
-//  Created by Matthew Binshtok on 8/16/16.
-//  Copyright © 2016 Matthew Binshtok. All rights reserved.
+//  Updated by Matthew Binshtok on 6/6/17.
+//  Copyright © 2017 Matthew Binshtok.
+//  All rights reserved.
 //
 
 import UIKit
@@ -12,7 +13,7 @@ class ViewController: UIViewController {
     
     private var brain = CalculatorBrain()
     
-    private var userIsInTheMiddleOfTyping = false
+    var userIsInTheMiddleOfTyping = false
     
     private var displayValue: Double {
         get {
@@ -23,27 +24,27 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBOutlet private weak var display: UILabel!
+    @IBOutlet weak var display: UILabel!
     
-    // button pressed is a number
-    @IBAction private func touchDigit(sender: UIButton) {
+    // button pressed is a number or decimal point
+    @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTyping {
             let textCurrentlyInDisplay = display.text!
-            //handling floating point
-            if digit == "." && textCurrentlyInDisplay.rangeOfString(".") == nil {
+            //handle floating point
+            if digit == "." && textCurrentlyInDisplay.range(of: ".") == nil {
                 display.text = textCurrentlyInDisplay + digit
             } else if digit != "." {
                 display.text = textCurrentlyInDisplay + digit
             }
         } else {
             display.text = digit
+            userIsInTheMiddleOfTyping = true
         }
-        userIsInTheMiddleOfTyping = true
     }
     
     // button pressed is an operation
-    @IBAction private func performOperation(sender: UIButton) {
+    @IBAction fileprivate func performOperation(_ sender: UIButton) {
         if userIsInTheMiddleOfTyping {
             brain.setOperand(displayValue)
             userIsInTheMiddleOfTyping = false
@@ -51,11 +52,13 @@ class ViewController: UIViewController {
         if let mathematicalSymbol = sender.currentTitle {
             brain.performOperation(mathematicalSymbol)
         }
-        displayValue = brain.result
+        if let result = brain.result {
+            displayValue = result
+        }
     }
     
     // button pressed is the clear button
-    @IBAction func clearOperation(sender: UIButton) {
+    @IBAction func clearOperation(_ sender: UIButton) {
         userIsInTheMiddleOfTyping = false;
         display.text = "0";
         brain.setOperand(0.0)

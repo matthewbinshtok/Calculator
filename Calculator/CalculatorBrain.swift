@@ -2,19 +2,22 @@
 //  CalculatorBrain.swift
 //  Calculator
 //
-//  Created by Matthew Binshtok on 8/17/16.
-//  Copyright © 2016 Matthew Binshtok. All rights reserved.
+//  Updated by Matthew Binshtok on 6/6/17.
+//  Copyright © 2017 Matthew Binshtok. 
+//  All rights reserved.
 //
 
 import Foundation
 
-class CalculatorBrain
+struct CalculatorBrain
 {
-    // accumulator
-    private var accumulator = 0.0
+    /* Stores the current value of the calculations
+     Type is Optional because when CalculatorBrain is initialized,
+     accumulator should not have an initial value */
+    private var accumulator: Double?
     
-    // set first operand
-    func setOperand(operand: Double){
+    // Sets accumulator to operand
+    mutating func setOperand(_ operand: Double){
         accumulator = operand
     }
     
@@ -26,27 +29,28 @@ class CalculatorBrain
      String passed by performOperation serving as key
      with a corresponding operation/constant using closures */
     private var operations: Dictionary<String,Operation> = [
-        "π"   :   Operation.Constant(M_PI), //M_PI
-        "e"   :   Operation.Constant(M_E), //M_E
-        "√"   :   Operation.UnaryOperation(sqrt),
-        "x²"  :   Operation.UnaryOperation({ $0 * $0 }),
-        "sin" :   Operation.UnaryOperation(sin),
-        "cos" :   Operation.UnaryOperation(cos),
-        "tan" :   Operation.UnaryOperation(tan),
-        "✕"   :   Operation.BinaryOperation({ $0 * $1 }),
-        "÷"   :   Operation.BinaryOperation({ $0 / $1 }),
-        "+"   :   Operation.BinaryOperation({ $0 + $1 }),
-        "−"   :   Operation.BinaryOperation({ $0 - $1 }),
-        "="   :   Operation.Equals
+        "π"   :   Operation.constant(Double.pi),
+        "e"   :   Operation.constant(M_E),
+        "√"   :   Operation.unaryOperation(sqrt),
+        "x²"  :   Operation.unaryOperation({ $0 * $0 }),
+        "sin" :   Operation.unaryOperation(sin),
+        "cos" :   Operation.unaryOperation(cos),
+        "tan" :   Operation.unaryOperation(tan),
+        "±"   :   Operation.unaryOperation({ -$0 }),
+        "✕"   :   Operation.binaryOperation({ $0 * $1 }),
+        "÷"   :   Operation.binaryOperation({ $0 / $1 }),
+        "+"   :   Operation.binaryOperation({ $0 + $1 }),
+        "−"   :   Operation.binaryOperation({ $0 - $1 }),
+        "="   :   Operation.equals
         
     ]
     
     // all possible operation types
     private enum Operation {
-        case Constant(Double)
-        case UnaryOperation((Double) -> Double)
-        case BinaryOperation((Double, Double) -> Double)
-        case Equals
+        case constant(Double)
+        case unaryOperation((Double) -> Double)
+        case binaryOperation((Double, Double) -> Double)
+        case equals
     }
     
     // returns whether there is a binary operation pending
@@ -65,35 +69,40 @@ class CalculatorBrain
     
     /* uses switch and Operation struct to determine how to
      perform requested operation based on symbol passed from button */
-    func performOperation(symbol: String){
+    mutating func performOperation(_ symbol: String){
         if let operation = operations[symbol]{
             switch operation {
-            case .Constant(let value):
+            case .constant(let value):
                 accumulator = value
-            case .UnaryOperation(let function):
-                accumulator = function(accumulator)
-            case .BinaryOperation(let function):
-                executePendingBinaryOperation()
-                pending = PendingOperation(firstOperand: accumulator, binaryFunction: function)
-                isPartialOperation = true;
-            case .Equals:
+            case .unaryOperation(let function):
+                if accumulator != nil {
+                    accumulator = function(accumulator!)
+                }
+            case .binaryOperation(let function):
+                if accumulator != nil {
+                    executePendingBinaryOperation()
+                    pending = PendingOperation(firstOperand: accumulator!, binaryFunction: function)
+                    accumulator = nil
+                    isPartialOperation = true
+                }
+            case .equals:
                 executePendingBinaryOperation()
             }
         }
     }
     
     // uses accumulator value as second operand to execute operation stored in PendingOperation
-    private func executePendingBinaryOperation(){
+    private mutating func executePendingBinaryOperation(){
         if pending != nil {
-            accumulator = pending!.binaryFunction( pending!.firstOperand, accumulator)
-            isPartialOperation = false;
+            accumulator = pending!.binaryFunction( pending!.firstOperand, accumulator!)
+            isPartialOperation = false
             pending = nil
         }
     }
     
     // result of calculations
     // accessed by view after performOperation executes
-    var result: Double {
+    var result: Double? {
         get {
             return accumulator
         }
